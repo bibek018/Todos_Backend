@@ -26,5 +26,5 @@ export const githubAuthController = catchAsync(async (req, res, next) => {
   user.refreshtoken = refreshtoken;
   await user.save();
 
-  res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+  res.redirect(`${process.env.CLIENT_ORIGIN}/dashboard`);
 });

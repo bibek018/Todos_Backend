@@ -7,7 +7,7 @@ import {
 } from "../controllers/controller.auth.js";
 import { googleAuthController } from "../controllers/controller.auth.google.js";
 import { githubAuthController } from "../controllers/controller.auth.github.js";
-import passport from "passport";
+import passport from "../utils/passport.js";
 import { signinSchema, signupSchema } from "../validators/user.validator.js";
 import { validate } from "../middlwares/validate.js";
 const router = express.Router();
