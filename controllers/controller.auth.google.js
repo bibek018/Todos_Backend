@@ -1,6 +1,6 @@
 import { User } from "../model/User.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
-import { catchAsync } from "../utils/CatchAsync.js";
+import { catchAsync } from "../utils/catchAsync.js";
 import {AppError} from "../utils/AppError.js";
 export const googleAuthController = catchAsync(async (req, res, next) => {
   if (!req?.user?.email) {

@@ -1,5 +1,5 @@
 import { Todo } from "../model/Todo.js";
-import { catchAsync } from "../utils/CatchAsync.js";
+import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
 export const getAllTodos = catchAsync(async (req, res, next) => {
   const todos = await Todo.find({ user: req.user.userId }).sort({

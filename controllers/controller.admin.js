@@ -1,4 +1,4 @@
-import {catchAsync} from "../utils/CatchAsync.js";
+import {catchAsync} from "../utils/catchAsync.js";
 import { User } from "../model/User.js";
 
 export const getUsers = catchAsync(async (req, res, next) => {

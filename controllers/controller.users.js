@@ -1,5 +1,5 @@
 import { User } from "../model/User.js";
-import { catchAsync } from "../utils/CatchAsync.js";
+import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
 const sanitizeUser = (user) => ({
   id: user._id,
