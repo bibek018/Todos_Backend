@@ -1,11 +1,10 @@
+import {AppError} from "../utils/AppError.js";
 import jwt from "jsonwebtoken";
 export const authMiddleware = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      const err = new Error("Authenication is required");
-      err.statusCode = 401;
-      throw err;
+      return next(new AppError("Authenication is required", 401));
     }
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
