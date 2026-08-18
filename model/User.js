@@ -28,15 +28,22 @@ const userSchema = new mongoose.Schema({
     unique: true,
     sparse: true,
   },
-  githubId:{
-    type:String,
-    sparse:true,
-    unique:true,
+  githubId: {
+    type: String,
+    sparse: true,
+    unique: true,
   },
   refreshtoken: {
     type: String,
     default: null,
     select: false,
+  },
+});
+userSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    delete ret.password;
+    delete ret.refreshtoken;
+    return ret;
   },
 });
 

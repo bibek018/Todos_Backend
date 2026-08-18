@@ -14,11 +14,32 @@ export const errorHandler = (err, req, res, next) => {
       success: false,
     });
   }
+  if (err.name === "JSONWebTokenError") {
+    return res.status(401).json({
+      status: 401,
+      message: "Invalid access token",
+      success: false,
+    });
+  }
+  if (err.name === "TokenExpiredError") {
+    return res.status(401).json({
+      status: 401,
+      message: "Access Token Expired",
+      success: false,
+    });
+  }
   const status = err.statusCode || 500;
+  if (!err.isOperational && status === 500) {
+    console.error("UNEXPECTED ERROR 💥", err);
+    return res
+      .status(500)
+      .json({ status: 500, message: "Something went wrong", success: false });
+  }
+
   res.status(status).json({
     status,
     message: err.message,
     success: false,
-    ...(err.details && {details:err.details})
+    ...(err.details && { details: err.details }),
   });
 };

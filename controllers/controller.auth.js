@@ -6,7 +6,7 @@ import { AppError } from "../utils/AppError.js";
 import { catchAsync } from "../utils/catchAsync.js";
 
 export const createAccount = catchAsync(async (req, res, next) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return next(new AppError("Bad Request", 400));
   }
@@ -19,7 +19,7 @@ export const createAccount = catchAsync(async (req, res, next) => {
     name,
     email,
     password,
-    role,
+    role:"user",
   });
 
   res.status(201).json({
