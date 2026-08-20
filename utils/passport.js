@@ -3,6 +3,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github";
 import mongoose from "mongoose";
+import logger from "./logger.js";
 passport.use(
   new GoogleStrategy(
     {
@@ -50,7 +51,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log(profile);
+        logger.debug("OAuth profile received", { profile });
         const email = profile?.emails?.[0]?.value;
         if (!email) {
           return done(

@@ -34,7 +34,7 @@ export const errorHandler = (err, req, res, next) => {
   const status = err.statusCode || 500;
   if (!err.isOperational && status === 500) {
     logger.error("Something went wrong!", {
-      meesage: err.meesage,
+      meesage: err.message,
       stack: err.stack,
       method: req.method,
       url: req.url,
