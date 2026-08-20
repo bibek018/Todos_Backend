@@ -1,3 +1,6 @@
+import { success } from "zod";
+import logger from "../utils/logger";
+
 export const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError") {
     return res.status(400).json({
@@ -30,12 +33,22 @@ export const errorHandler = (err, req, res, next) => {
   }
   const status = err.statusCode || 500;
   if (!err.isOperational && status === 500) {
-    console.error("UNEXPECTED ERROR 💥", err);
+    logger.error("Something went wrong!", {
+      meesage: err.meesage,
+      stack: err.stack,
+      method: req.method,
+      url: req.url,
+    });
     return res
       .status(500)
       .json({ status: 500, message: "Something went wrong", success: false });
   }
-
+  logger.warn(`${err.message}`, {
+    status,
+    message: err.meesage,
+    success: false,
+    ...(err.details && { details: err.details }),
+  });
   res.status(status).json({
     status,
     message: err.message,
