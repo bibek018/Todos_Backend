@@ -10,9 +10,10 @@ import { githubAuthController } from "../controllers/controller.auth.github.js";
 import passport from "../utils/passport.js";
 import { signinSchema, signupSchema } from "../validators/user.validator.js";
 import { validate } from "../middlwares/validate.js";
+import { authlimiter } from "../utils/ratelimiter.js";
 const router = express.Router();
-router.post("/register", validate(signupSchema), createAccount);
-router.post("/login", validate(signinSchema), loginAccount);
+router.post("/register", authlimiter,validate(signupSchema), createAccount);
+router.post("/login",authlimiter, validate(signinSchema), loginAccount);
 router.get(
   "/google",
   passport.authenticate("google", {
