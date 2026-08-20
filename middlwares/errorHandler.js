@@ -45,7 +45,7 @@ export const errorHandler = (err, req, res, next) => {
   }
   logger.warn(`${err.message}`, {
     status,
-    message: err.meesage,
+    message: err.message,
     success: false,
     ...(err.details && { details: err.details }),
   });

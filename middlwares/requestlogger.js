@@ -1,6 +1,5 @@
+import logger from "../utils/logger.js";
 export const requestlogger = (req, res, next) => {
-  console.log(
-    `New request received \n Request Method :${req.method} \n Request URL :${req.url}`
-  );
+  logger.info("Incoming request", { method: req.method, url: req.url });
   next();
 };
