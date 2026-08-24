@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { requestlogger } from "./middlwares/requestlogger.js";
-import { dbConnection } from "./utils/dbConnection.js";
+import { dbConnection } from "./config/dbConnection.js";
 import { authMiddleware } from "./middlwares/authMiddleware.js";
 import authRouter from "./routes/routes.auth.js";
 import userRouter from "./routes/routes.users.js";

@@ -2,7 +2,7 @@ import logger from "../utils/logger.js";
 import { AppError } from "../utils/AppError.js";
 import jwt from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync.js";
-export const authMiddleware = catchAsync((req, res, next) => {
+export const authMiddleware = catchAsync(async(req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return next(new AppError("Authenication is required", 401));

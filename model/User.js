@@ -38,6 +38,15 @@ const userSchema = new mongoose.Schema({
     default: null,
     select: false,
   },
+  avatarUrl: {
+    type: String,
+    default: null,
+  },
+  
+  avatarPublicId: {
+    type: String,
+    default: null,
+  },
 });
 userSchema.set("toJSON", {
   transform: function (doc, ret) {

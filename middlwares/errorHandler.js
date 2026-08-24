@@ -1,5 +1,5 @@
 import { success } from "zod";
-import logger from "../utils/logger";
+import logger from "../utils/logger.js";
 
 export const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError") {
