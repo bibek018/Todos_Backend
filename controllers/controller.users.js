@@ -92,13 +92,13 @@ export const changePassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("User does not exist!", 404));
   }
-  const isMatching = await bcrypt.compare(currentpassword, user.password);
+  const isMatching = await bcrypt.compare(currentPassword, user.password);
   if (!isMatching) {
     return next(
       new AppError("Please enter correct password of this account", 401),
     );
   }
-  user.password = newpassword;
+  user.password = newPassword;
   const refreshtoken = await generateRefreshToken(user);
   res.cookie("refreshtoken", refreshtoken, {
     httpOnly: true,

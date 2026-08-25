@@ -9,7 +9,9 @@ export const validate = (schema) => {
           field: i.path.join("."),
           message: i.message,
         }));
+        console.log(err);
         throw err;
+
       }
       req.body = result.data;
       next();
