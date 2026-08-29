@@ -1,7 +1,7 @@
-export const validate = (schema) => {
+export const validate = (schema, source="body") => {
   return (req, res, next) => {
     try {
-      const result = schema.safeParse(req.body);
+      const result = schema.safeParse(req[source]);
       if (!result.success) {
         const err = new Error(`Validation Failed`);
         err.statusCode = 400;
@@ -13,7 +13,7 @@ export const validate = (schema) => {
         throw err;
 
       }
-      req.body = result.data;
+      req[source] = result.data;
       next();
     } catch (err) {
       next(err);

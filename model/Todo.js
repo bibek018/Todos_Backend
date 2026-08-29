@@ -11,6 +11,11 @@ const todoSchema = new mongoose.Schema(
       enum: ["not started", "completed", "in progress"],
       default: "not started",
     },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

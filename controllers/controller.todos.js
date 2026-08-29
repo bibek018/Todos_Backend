@@ -1,18 +1,24 @@
 import { Todo } from "../model/Todo.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
+import { success } from "zod";
+
 export const getAllTodos = catchAsync(async (req, res, next) => {
-  const todos = await Todo.find({ user: req.user.userId }).sort({
-    createdAt: -1,
-  });
+  
   res.status(200).json({
     success: true,
     todos,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
   });
 });
 
 export const createTodo = catchAsync(async (req, res, next) => {
-  const { title, status } = req.body;
+  const { title, status, priority } = req.body;
 
   if (!title) {
     return next(new AppError("Title is required", 400));
@@ -21,6 +27,7 @@ export const createTodo = catchAsync(async (req, res, next) => {
   const todo = await Todo.create({
     title,
     status,
+    priority,
     user: req.user.userId,
   });
 
@@ -46,7 +53,7 @@ export const getTodoById = catchAsync(async (req, res, next) => {
 });
 
 export const updateTodo = catchAsync(async (req, res, next) => {
-  const { title, status } = req.body;
+  const { title, status, priority } = req.body;
 
   const todo = await Todo.findOne({
     _id: req.params.id,
@@ -59,6 +66,7 @@ export const updateTodo = catchAsync(async (req, res, next) => {
 
   if (title !== undefined) todo.title = title;
   if (status !== undefined) todo.status = status;
+  if (priority !== undefined) todo.priority = priority;
 
   await todo.save();
 
