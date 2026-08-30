@@ -6,7 +6,7 @@ import { AppError } from "../utils/AppError.js";
 import { catchAsync } from "../utils/catchAsync.js";
 
 export const createAccount = catchAsync(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password } = req.validated.body;
   if (!name || !email || !password) {
     return next(new AppError("Bad Request", 400));
   }
@@ -35,7 +35,7 @@ export const createAccount = catchAsync(async (req, res, next) => {
 });
 
 export const loginAccount = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password } = req.validated.body;
   if (!email || !password) {
     return next(new AppError("Bad Request", 400));
   }

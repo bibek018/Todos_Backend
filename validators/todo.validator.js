@@ -46,6 +46,7 @@ export const getTodoSchema = z.object({
     .enum(["low", "medium", "high"], "Incorrect priority field chosen")
     .optional(),
   sort: z
-    .enum(["createdAt","updatedAt", "title"], "Incorrect sort option chosen")
-    .optional(),
-});
+    .enum(["createdAt", "updatedAt", "title"], "Incorrect sort option chosen")
+    .default("createdAt"),
+  order: z.enum(["asc", "desc"], "Incorrect order chosen").default("asc"),
+}).strict();

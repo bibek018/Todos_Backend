@@ -2,23 +2,33 @@ import { Todo } from "../model/Todo.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
 import { success } from "zod";
-
 export const getAllTodos = catchAsync(async (req, res, next) => {
-  
+  const { page, limit, status, priority, sort, order } = req.validated.query;
+
+  const filter = { user: req.user.userId };
+  if (status) filter.status = status;
+  if (priority) filter.priority = priority;
+
+  const sortOrder = order === "asc" ? 1 : -1;
+  const skip = (page - 1) * limit;
+
+  const [todos, total] = await Promise.all([
+    Todo.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sort({ [sort]: sortOrder }),
+    Todo.countDocuments(filter),
+  ]);
+
   res.status(200).json({
     success: true,
     todos,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    },
+    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
   });
 });
 
 export const createTodo = catchAsync(async (req, res, next) => {
-  const { title, status, priority } = req.body;
+  const { title, status, priority } = req.validated.body;
 
   if (!title) {
     return next(new AppError("Title is required", 400));
@@ -53,7 +63,7 @@ export const getTodoById = catchAsync(async (req, res, next) => {
 });
 
 export const updateTodo = catchAsync(async (req, res, next) => {
-  const { title, status, priority } = req.body;
+  const { title, status, priority } = req.validated.body;
 
   const todo = await Todo.findOne({
     _id: req.params.id,
