@@ -27,7 +27,7 @@ export const getMyProfile = catchAsync(async (req, res, next) => {
   });
 });
 export const updateMyProfile = catchAsync(async (req, res, next) => {
-  const { name } = req.body;
+  const { name } = req.validated.body;
 
   // Nothing was provided
   if (name === undefined && !req.file) {
@@ -41,18 +41,9 @@ export const updateMyProfile = catchAsync(async (req, res, next) => {
   }
 
   // Update name if provided
-  if (name !== undefined) {
-    const trimmedName = name.trim();
-
-    if (!trimmedName) {
-      return next(new AppError("Name cannot be empty", 400));
-    }
-
-    if (user.name !== trimmedName) {
-      user.name = trimmedName;
-    }
+  if (name) {
+    user.name = name;
   }
-
   if (req.file) {
     const oldPublicId = user.avatarPublicId;
     logger.info(oldPublicId);
@@ -84,7 +75,7 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 });
 
 export const changePassword = catchAsync(async (req, res, next) => {
-  const { currentPassword, newPassword } = req.body;
+  const { currentPassword, newPassword } = req.validated.body;
   const user = await User.findById(req.user.userId)
     .select("+password")
     .select("+refreshtoken");

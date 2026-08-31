@@ -28,3 +28,7 @@ export const changePasswordSchema = z
     message: "New passwords do not match",
     path: ["confirmNewPassword"],
   });
+
+export const updateProfileSchema = z.object({
+  name: z.string().trim().min(3, "Name must be minimum of 3 letters.").optional(),
+}).strict();
