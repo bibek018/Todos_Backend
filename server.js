@@ -29,7 +29,7 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(requestlogger);
-dbConnection();
+await dbConnection();
 app.use(generallimiter);
 
 app.use("/api/auth", authRouter);
