@@ -1,0 +1,231 @@
+{
+    "info": {
+      "name": "Todos API",
+      "description": "Collection for the Todos REST API — auth, todos, users, admin.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+      { "key": "baseUrl", "value": "http://localhost:3000/api" },
+      { "key": "accessToken", "value": "" }
+    ],
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Register",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}"
+              },
+              "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] },
+              "description": "Create a new account. No auth required."
+            }
+          },
+          {
+            "name": "Login",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 200) {",
+                    "  const data = pm.response.json();",
+                    "  if (data.accesstoken) pm.collectionVariables.set('accessToken', data.accesstoken);",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\"\n}"
+              },
+              "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+              "description": "Log in. No auth required. Auto-saves accessToken to collection variable via test script; refresh token is set as an httpOnly cookie automatically."
+            }
+          },
+          {
+            "name": "Refresh Token",
+            "request": {
+              "method": "POST",
+              "url": { "raw": "{{baseUrl}}/auth/refresh", "host": ["{{baseUrl}}"], "path": ["auth", "refresh"] },
+              "description": "Requires the refreshtoken httpOnly cookie (sent automatically by Postman's cookie jar after login)."
+            }
+          },
+          {
+            "name": "Logout",
+            "request": {
+              "method": "POST",
+              "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] },
+              "description": "Requires the refreshtoken httpOnly cookie."
+            }
+          },
+          {
+            "name": "Google OAuth - Start",
+            "request": {
+              "method": "GET",
+              "url": { "raw": "{{baseUrl}}/auth/google", "host": ["{{baseUrl}}"], "path": ["auth", "google"] },
+              "description": "Open in a browser (not Postman) to go through Google's consent screen."
+            }
+          },
+          {
+            "name": "GitHub OAuth - Start",
+            "request": {
+              "method": "GET",
+              "url": { "raw": "{{baseUrl}}/auth/github", "host": ["{{baseUrl}}"], "path": ["auth", "github"] },
+              "description": "Open in a browser (not Postman) to go through GitHub's consent screen."
+            }
+          }
+        ]
+      },
+      {
+        "name": "Todos",
+        "item": [
+          {
+            "name": "List Todos",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "url": {
+                "raw": "{{baseUrl}}/todos?page=1&limit=10&sort=createdAt&order=asc",
+                "host": ["{{baseUrl}}"],
+                "path": ["todos"],
+                "query": [
+                  { "key": "page", "value": "1" },
+                  { "key": "limit", "value": "10" },
+                  { "key": "status", "value": "", "disabled": true },
+                  { "key": "priority", "value": "", "disabled": true },
+                  { "key": "sort", "value": "createdAt" },
+                  { "key": "order", "value": "asc" }
+                ]
+              },
+              "description": "List current user's todos. Paginated, filterable by status/priority, sortable."
+            }
+          },
+          {
+            "name": "Create Todo",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"title\": \"Buy groceries\",\n  \"status\": \"not started\",\n  \"priority\": \"medium\"\n}"
+              },
+              "url": { "raw": "{{baseUrl}}/todos", "host": ["{{baseUrl}}"], "path": ["todos"] },
+              "description": "Create a todo. title min 8 chars; status/priority required enums; body is strict."
+            }
+          },
+          {
+            "name": "Get Todo By Id",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "url": { "raw": "{{baseUrl}}/todos/:id", "host": ["{{baseUrl}}"], "path": ["todos", ":id"], "variable": [{ "key": "id", "value": "" }] }
+            }
+          },
+          {
+            "name": "Update Todo",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"status\": \"completed\"\n}"
+              },
+              "url": { "raw": "{{baseUrl}}/todos/:id", "host": ["{{baseUrl}}"], "path": ["todos", ":id"], "variable": [{ "key": "id", "value": "" }] },
+              "description": "All fields optional; still strict on unknown fields."
+            }
+          },
+          {
+            "name": "Delete Todo",
+            "request": {
+              "method": "DELETE",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "url": { "raw": "{{baseUrl}}/todos/:id", "host": ["{{baseUrl}}"], "path": ["todos", ":id"], "variable": [{ "key": "id", "value": "" }] }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Get My Profile",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }
+            }
+          },
+          {
+            "name": "Update My Profile",
+            "request": {
+              "method": "PUT",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "body": {
+                "mode": "formdata",
+                "formdata": [
+                  { "key": "name", "value": "Jane Doe", "type": "text" },
+                  { "key": "avatar", "type": "file", "src": "" }
+                ]
+              },
+              "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] },
+              "description": "multipart/form-data. At least one of name or avatar must be provided."
+            }
+          },
+          {
+            "name": "Change Password",
+            "request": {
+              "method": "PUT",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\",\n  \"confirmNewPassword\": \"newpassword123\"\n}"
+              },
+              "url": { "raw": "{{baseUrl}}/users/me/changepassword", "host": ["{{baseUrl}}"], "path": ["users", "me", "changepassword"] }
+            }
+          },
+          {
+            "name": "Delete User (admin)",
+            "request": {
+              "method": "DELETE",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "url": { "raw": "{{baseUrl}}/users/:id", "host": ["{{baseUrl}}"], "path": ["users", ":id"], "variable": [{ "key": "id", "value": "" }] },
+              "description": "Requires admin role."
+            }
+          }
+        ]
+      },
+      {
+        "name": "Admin",
+        "item": [
+          {
+            "name": "List All Users",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+              "url": { "raw": "{{baseUrl}}/admin/users", "host": ["{{baseUrl}}"], "path": ["admin", "users"] },
+              "description": "Requires admin role."
+            }
+          }
+        ]
+      }
+    ]
+  }
