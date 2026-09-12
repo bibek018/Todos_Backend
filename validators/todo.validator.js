@@ -2,14 +2,15 @@ import { z } from "zod";
 export const validtodoSchema = z
   .object({
     title: z.string().min(8, "Title must be of minium length 8"),
-    status: z.enum(
-      ["not started", "in progress", "completed"],
-      "Incorrect status chosen",
-    ),
-    priority: z.enum(
-      ["low", "medium", "high"],
-      "incorrect priority field chosen",
-    ),
+    status: z
+      .enum(
+        ["not started", "in progress", "completed"],
+        "Incorrect status chosen",
+      )
+      .default("not started"),
+    priority: z
+      .enum(["low", "medium", "high"], "incorrect priority field chosen")
+      .default("medium"),
   })
   .strict();
 

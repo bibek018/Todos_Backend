@@ -29,5 +29,9 @@
     "passport-google-oauth20": "^2.0.0",
     "winston": "^3.19.0",
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "jest": "^30.5.1",
+    "supertest": "^7.2.2"
   }
 }

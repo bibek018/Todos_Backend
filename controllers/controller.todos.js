@@ -54,7 +54,7 @@ export const getTodoById = catchAsync(async (req, res, next) => {
     user: req.user.userId,
   });
   if (!todo) {
-    return next(new AppError("Todo does not exits", 404));
+    return next(new AppError("Todo does not exists", 404));
   }
   res.status(200).json({
     success: true,
