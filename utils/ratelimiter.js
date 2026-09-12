@@ -1,5 +1,5 @@
 import rateLimit from "express-rate-limit";
-isTestEnv = process.env.NODE_ENV === "Test";
+isTestEnv = process.env.NODE_ENV === "test";
 export const authlimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 5,
