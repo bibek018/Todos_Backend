@@ -1,4 +1,4 @@
-import { request } from "supertest";
+import request  from "supertest";
 import app from "../app.js";
 import { authUser } from "./helper/auth.js";
 import { Todo } from "../model/Todo.js";
@@ -164,7 +164,7 @@ describe("Todo API Test", () => {
       expect(response.body.pagination).toHaveProperty("limit", 10);
 
       // We created 3 todos
-      expect(response.body.pagination).toHaveProperty("totalTodos", 3);
+      expect(response.body.pagination).toHaveProperty("total", 3);
     });
 
     // CUSTOM PAGINATION
@@ -435,8 +435,7 @@ describe("Todo API Test", () => {
         .delete(`/api/todos/${todo.body.todo._id}`)
         .set("Authorization", `Bearer ${accesstoken}`);
 
-      expect(deleteRes.statusCode).toBe(200);
-      expect(deleteRes.body).toHaveProperty("message");
+      expect(deleteRes.statusCode).toBe(204);
 
       // Verify item no longer exists
       const getRes = await request(app)

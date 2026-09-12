@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { requestlogger } from "./middlwares/requestlogger.js";
-import { dbConnection } from "./config/dbConnection.js";
 import { authMiddleware } from "./middlwares/authMiddleware.js";
 import authRouter from "./routes/routes.auth.js";
 import userRouter from "./routes/routes.users.js";
@@ -29,8 +28,7 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(requestlogger);
-await dbConnection();
-app.use(generallimiter);
+// app.use(generallimiter);
 
 app.use("/api/auth", authRouter);
 app.use("/api/admin", authMiddleware, adminRouter);

@@ -1,0 +1,101 @@
+
+> jwt_project@1.0.0 test
+> cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit --silent
+
+(node:23848) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL test/user.test.js (10.373 s)
+  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should change password with valid authentication
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 404
+
+      36 |         .set("Authorization", `Bearer ${accesstoken}`);
+      37 |
+    > 38 |       expect(response.statusCode).toBe(200);
+         |                                   ^
+      39 |
+      40 |       expect(response.body).toHaveProperty(
+      41 |         "message",
+
+      at Object.toBe (test/user.test.js:38:35)
+
+  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should reject password change without authentication
+
+    expect(received).toHaveProperty(path, value)
+
+    Expected path: "message"
+
+    Expected value: "Authenication is required"
+    Received value: "Authentication is required"
+
+      55 |       expect(response.statusCode).toBe(401);
+      56 |
+    > 57 |       expect(response.body).toHaveProperty(
+         |                             ^
+      58 |         "message",
+      59 |         "Authenication is required",
+      60 |       );
+
+      at Object.toHaveProperty (test/user.test.js:57:29)
+
+  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should reject password change with missing fields
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 404
+
+      70 |         .set("Authorization", `Bearer ${accesstoken}`);
+      71 |
+    > 72 |       expect(response.statusCode).toBe(400);
+         |                                   ^
+      73 |     });
+      74 |
+      75 |     test("should reject when new password and confirmation do not match", async () => {
+
+      at Object.toBe (test/user.test.js:72:35)
+
+  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should reject when new password and confirmation do not match
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 404
+
+      83 |         .set("Authorization", `Bearer ${accesstoken}`);
+      84 |
+    > 85 |       expect(response.statusCode).toBe(400);
+         |                                   ^
+      86 |     });
+      87 |
+      88 |     test("should reject when current password is incorrect", async () => {
+
+      at Object.toBe (test/user.test.js:85:35)
+
+  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should reject when current password is incorrect
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 404
+
+       96 |         .set("Authorization", `Bearer ${accesstoken}`);
+       97 |       console.log(response.body);
+    >  98 |       expect(response.statusCode).toBe(401);
+          |                                   ^
+       99 |     });
+      100 |   });
+      101 |
+
+      at Object.toBe (test/user.test.js:98:35)
+
+PASS test/todo.test.js (18.903 s)
+PASS test/auth.test.js
+
+Test Suites: 1 failed, 2 passed, 3 total
+Tests:       5 failed, 46 passed, 51 total
+Snapshots:   0 total
+Time:        34.367 s

@@ -1,6 +1,6 @@
 import winston from "winston";
 const logger = winston.createLogger({
-    level:"info",
+    level:process.env.NODE_ENV === "test" ?"silent":"info",
     format:winston.format.combine(
         winston.format.timestamp(),
         winston.format.printf(({timestamp, level, message, ...meta})=>{

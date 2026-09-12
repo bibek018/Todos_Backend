@@ -1,15 +1,28 @@
-import { request } from "supertest";
+import mongoose from "mongoose";
+import request from "supertest";
 import app from "../app.js";
 import { authUser, authUserChangePassword } from "./helper/auth.js";
+import { User } from "../model/User.js";
 
 describe("User API", () => {
   // CHANGE PASSWORD
 
+  beforeAll(async () => {
+    await mongoose.connect(`${process.env.TEST_DB_URI}`);
+  });
+
+  afterEach(async () => {
+    await User.deleteMany({});
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
   describe("POST /api/users/me/changepassword", () => {
-    let accessToken = "";
+    let accesstoken = "";
 
     beforeEach(async () => {
-      accessToken = await authUserChangePassword();
+      accesstoken = await authUserChangePassword();
     });
 
     test("should change password with valid authentication", async () => {
@@ -20,7 +33,7 @@ describe("User API", () => {
           newPassword: "123456789",
           confirmNewPassword: "123456789",
         })
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(200);
 
@@ -43,7 +56,7 @@ describe("User API", () => {
 
       expect(response.body).toHaveProperty(
         "message",
-        "Authenication is required",
+        "Authentication is required",
       );
     });
 
@@ -54,7 +67,7 @@ describe("User API", () => {
           currentPassword: "12345678",
           newPassword: "123456789",
         })
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(400);
     });
@@ -67,7 +80,7 @@ describe("User API", () => {
           newPassword: "123456789",
           confirmNewPassword: "12345678910",
         })
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(400);
     });
@@ -80,8 +93,8 @@ describe("User API", () => {
           newPassword: "123456789",
           confirmNewPassword: "123456789",
         })
-        .set("Authorization", `Bearer ${accessToken}`);
-
+        .set("Authorization", `Bearer ${accesstoken}`);
+      console.log(response.body);
       expect(response.statusCode).toBe(401);
     });
   });
@@ -89,17 +102,17 @@ describe("User API", () => {
   // PROFILE UPDATE
 
   describe("PUT /api/users/me", () => {
-    let accessToken = "";
+    let accesstoken = "";
 
     beforeEach(async () => {
-      accessToken = await authUser();
+      accesstoken = await authUser();
     });
 
     test("should update name without profile photo", async () => {
       const response = await request(app)
         .put("/api/users/me")
         .field("name", "Bibek Ojha")
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(200);
 
@@ -109,8 +122,8 @@ describe("User API", () => {
     test("should update profile photo without changing name", async () => {
       const response = await request(app)
         .put("/api/users/me")
-        .attach("avatar", "tests/fixtures/profile.png")
-        .set("Authorization", `Bearer ${accessToken}`);
+        .attach("avatar", "test/img/profile.png")
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(200);
 
@@ -122,7 +135,7 @@ describe("User API", () => {
         .put("/api/users/me")
         .field("name", "Apple Tim")
         .attach("avatar", "test/img/profile.png")
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(200);
 
@@ -141,7 +154,7 @@ describe("User API", () => {
       const response = await request(app)
         .put("/api/users/me")
         .field("name", "A")
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(400);
     });
@@ -149,8 +162,8 @@ describe("User API", () => {
     test("should reject invalid profile photo type", async () => {
       const response = await request(app)
         .put("/api/users/me")
-        .attach("avatar", "tests/fixtures/invalid.txt")
-        .set("Authorization", `Bearer ${accessToken}`);
+        .attach("avatar", "test/img/invalid.txt")
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(400);
     });
@@ -159,16 +172,16 @@ describe("User API", () => {
   // GET CURRENT USER
 
   describe("GET /api/users/me", () => {
-    let accessToken = "";
+    let accesstoken = "";
 
     beforeEach(async () => {
-      accessToken = await authUser();
+      accesstoken = await authUser();
     });
 
     test("should get user details with valid authentication", async () => {
       const response = await request(app)
         .get("/api/users/me")
-        .set("Authorization", `Bearer ${accessToken}`);
+        .set("Authorization", `Bearer ${accesstoken}`);
 
       expect(response.statusCode).toBe(200);
 

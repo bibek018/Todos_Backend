@@ -1,4 +1,4 @@
-import { request } from "supertest";
+import request  from "supertest";
 import app from "../../app";
 
 export const authUser = async () => {
@@ -8,26 +8,26 @@ export const authUser = async () => {
     password: "12345678",
   });
 
-  const response = await request(api).post("/api/auth/login").send({
+  const response = await request(app).post("/api/auth/login").send({
     email: "abc@example.com",
     password: "12345678",
   });
 
-  return response.body.data.accesstoken;
+  return response.body.accesstoken;
 };
 
 
 export const authUserChangePassword = async () => {
   await request(app).post("/api/auth/register").send({
-    name: "John",
-    email: "abc@example.com",
+    name: "John Moe",
+    email: "abcd@example.com",
     password: "12345678",
   });
 
-  const response = await request(api).post("/api/auth/login").send({
-    email: "abc@example.com",
+  const response = await request(app).post("/api/auth/login").send({
+    email: "abcd@example.com",
     password: "12345678",
   });
 
-  return response.body.data.accesstoken;
+  return response.body.accesstoken;
 };
