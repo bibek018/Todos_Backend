@@ -2,51 +2,456 @@
 > jwt_project@1.0.0 test
 > cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit --silent
 
-(node:23848) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(node:10360) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-FAIL test/user.test.js (10.373 s)
-  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should change password with valid authentication
+FAIL test/todo.test.js (5.036 s)
+  ΓùÅ Todo API Test ΓÇ║  Todo create POST:/api/todos  ΓÇ║ should reject the request  on missing the title 
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      53 |         .set("Authorization", `Bearer ${accesstoken}`);
+      54 |
+    > 55 |       expect(response.statusCode).toBe(400);
+         |                                   ^
+      56 |     });
+      57 |
+      58 |     test("should default create the status and priority on missing ", async () => {
+
+      at Object.toBe (test/todo.test.js:55:35)
+
+  ΓùÅ Todo API Test ΓÇ║  Todo create POST:/api/todos  ΓÇ║ should default create the status and priority on missing 
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 500
+
+      63 |         })
+      64 |         .set("Authorization", `Bearer ${accesstoken}`);
+    > 65 |       expect(response.statusCode).toBe(201);
+         |                                   ^
+      66 |
+      67 |       expect(response.body).toHaveProperty("todo");
+      68 |       expect(response.body.todo).toHaveProperty(
+
+      at Object.toBe (test/todo.test.js:65:35)
+
+  ΓùÅ Todo API Test ΓÇ║  Todo create POST:/api/todos  ΓÇ║ should reject todo with title shorter than minimum length
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      78 |         .send({ title: "Todo", status: "not started", priority: "high" })
+      79 |         .set("Authorization", `Bearer ${accesstoken}`);
+    > 80 |       expect(response.statusCode).toBe(400);
+         |                                   ^
+      81 |     });
+      82 |     test("should reject todo with invalid status", async () => {
+      83 |       const response = await request(app)
+
+      at Object.toBe (test/todo.test.js:80:35)
+
+  ΓùÅ Todo API Test ΓÇ║  Todo create POST:/api/todos  ΓÇ║ should reject todo with invalid status
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      89 |         })
+      90 |         .set("Authorization", `Bearer ${accesstoken}`);
+    > 91 |       expect(response.statusCode).toBe(400);
+         |                                   ^
+      92 |     });
+      93 |     test("should reject todo with invalid priority", async () => {
+      94 |       const response = await request(app)
+
+      at Object.toBe (test/todo.test.js:91:35)
+
+  ΓùÅ Todo API Test ΓÇ║  Todo create POST:/api/todos  ΓÇ║ should reject todo with invalid priority
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      100 |         })
+      101 |         .set("Authorization", `Bearer ${accesstoken}`);
+    > 102 |       expect(response.statusCode).toBe(400);
+          |                                   ^
+      103 |     });
+      104 |   });
+      105 |
+
+      at Object.toBe (test/todo.test.js:102:35)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos ΓÇ║ should return todos with default pagination
 
     expect(received).toBe(expected) // Object.is equality
 
     Expected: 200
-    Received: 404
+    Received: 500
 
-      36 |         .set("Authorization", `Bearer ${accesstoken}`);
-      37 |
-    > 38 |       expect(response.statusCode).toBe(200);
-         |                                   ^
-      39 |
-      40 |       expect(response.body).toHaveProperty(
-      41 |         "message",
+      150 |         .set("Authorization", `Bearer ${accesstoken}`);
+      151 |
+    > 152 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      153 |
+      154 |       // Check todos
+      155 |       expect(response.body).toHaveProperty("todos");
 
-      at Object.toBe (test/user.test.js:38:35)
+      at Object.toBe (test/todo.test.js:152:35)
 
-  ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should reject password change without authentication
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos ΓÇ║ should return todos according to custom page and limit
 
-    expect(received).toHaveProperty(path, value)
+    expect(received).toBe(expected) // Object.is equality
 
-    Expected path: "message"
+    Expected: 200
+    Received: 500
 
-    Expected value: "Authenication is required"
-    Received value: "Authentication is required"
+      179 |         .set("Authorization", `Bearer ${accesstoken}`);
+      180 |
+    > 181 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      182 |
+      183 |       expect(response.body).toHaveProperty("todos");
+      184 |       expect(Array.isArray(response.body.todos)).toBe(true);
 
-      55 |       expect(response.statusCode).toBe(401);
-      56 |
-    > 57 |       expect(response.body).toHaveProperty(
-         |                             ^
-      58 |         "message",
-      59 |         "Authenication is required",
-      60 |       );
+      at Object.toBe (test/todo.test.js:181:35)
 
-      at Object.toHaveProperty (test/user.test.js:57:29)
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos ΓÇ║ should return todos filtered by status
 
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      203 |         .set("Authorization", `Bearer ${accesstoken}`);
+      204 |
+    > 205 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      206 |
+      207 |       expect(response.body).toHaveProperty("todos");
+      208 |       expect(Array.isArray(response.body.todos)).toBe(true);
+
+      at Object.toBe (test/todo.test.js:205:35)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos ΓÇ║ should return todos filtered by priority
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      227 |         .set("Authorization", `Bearer ${accesstoken}`);
+      228 |
+    > 229 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      230 |
+      231 |       expect(response.body).toHaveProperty("todos");
+      232 |       expect(Array.isArray(response.body.todos)).toBe(true);
+
+      at Object.toBe (test/todo.test.js:229:35)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos ΓÇ║ should filter todos using status and priority together
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      249 |         .set("Authorization", `Bearer ${accesstoken}`);
+      250 |
+    > 251 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      252 |
+      253 |       expect(response.body).toHaveProperty("todos");
+      254 |       expect(Array.isArray(response.body.todos)).toBe(true);
+
+      at Object.toBe (test/todo.test.js:251:35)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos ΓÇ║ should return todos according to selected sort and order
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      272 |         .set("Authorization", `Bearer ${accesstoken}`);
+      273 |
+    > 274 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      275 |
+      276 |       expect(response.body).toHaveProperty("todos");
+      277 |       expect(Array.isArray(response.body.todos)).toBe(true);
+
+      at Object.toBe (test/todo.test.js:274:35)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should update title only
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      320 |     test("should update title only", async () => {
+      321 |       const todoResponse = await request(app)
+    > 322 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      323 |         .send({ title: "Learn Node.js fast" })
+      324 |         .set("Authorization", `Bearer ${accesstoken}`);
+      325 |
+
+      at Object._id (test/todo.test.js:322:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should update status only
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      334 |     test("should update status only", async () => {
+      335 |       const todoResponse = await request(app)
+    > 336 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      337 |         .send({ status: "completed" })
+      338 |         .set("Authorization", `Bearer ${accesstoken}`);
+      339 |
+
+      at Object._id (test/todo.test.js:336:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should update priority only
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      344 |     test("should update priority only", async () => {
+      345 |       const todoResponse = await request(app)
+    > 346 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      347 |         .send({ priority: "high" })
+      348 |         .set("Authorization", `Bearer ${accesstoken}`);
+      349 |
+
+      at Object._id (test/todo.test.js:346:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should update all fields simultaneously
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      360 |
+      361 |       const todoResponse = await request(app)
+    > 362 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      363 |         .send(payload)
+      364 |         .set("Authorization", `Bearer ${accesstoken}`);
+      365 |
+
+      at Object._id (test/todo.test.js:362:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should return 400 for invalid priority enum
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      370 |     test("should return 400 for invalid priority enum", async () => {
+      371 |       const todoResponse = await request(app)
+    > 372 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      373 |         .send({ priority: "very high" })
+      374 |         .set("Authorization", `Bearer ${accesstoken}`);
+      375 |
+
+      at Object._id (test/todo.test.js:372:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should return 400 for invalid status enum
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      379 |     test("should return 400 for invalid status enum", async () => {
+      380 |       const todoResponse = await request(app)
+    > 381 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      382 |         .send({ status: "full" })
+      383 |         .set("Authorization", `Bearer ${accesstoken}`);
+      384 |
+
+      at Object._id (test/todo.test.js:381:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should return 400 when title is below min length
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      388 |     test("should return 400 when title is below min length", async () => {
+      389 |       const todoResponse = await request(app)
+    > 390 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      391 |         .send({ title: "Learn" })
+      392 |         .set("Authorization", `Bearer ${accesstoken}`);
+      393 |
+
+      at Object._id (test/todo.test.js:390:45)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should return 400 for malformed Mongo ID
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      402 |         .set("Authorization", `Bearer ${accesstoken}`);
+      403 |
+    > 404 |       expect(todoResponse.statusCode).toBe(400);
+          |                                       ^
+      405 |     });
+      406 |
+      407 |     test("should return 401 when access token is missing", async () => {
+
+      at Object.toBe (test/todo.test.js:404:39)
+
+  ΓùÅ Todo API Test ΓÇ║ PATCH /api/todos/:id ΓÇ║ should return 401 when access token is missing
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      407 |     test("should return 401 when access token is missing", async () => {
+      408 |       const todoResponse = await request(app)
+    > 409 |         .patch(`/api/todos/${todo.body.todo._id}`)
+          |                                             ^
+      410 |         .send({ priority: "high" });
+      411 |
+      412 |       expect(todoResponse.statusCode).toBe(401);
+
+      at Object._id (test/todo.test.js:409:45)
+
+  ΓùÅ Todo API Test ΓÇ║ DELETE /api/todos/:id ΓÇ║ should successfully delete a todo
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      433 |     test("should successfully delete a todo", async () => {
+      434 |       const deleteRes = await request(app)
+    > 435 |         .delete(`/api/todos/${todo.body.todo._id}`)
+          |                                              ^
+      436 |         .set("Authorization", `Bearer ${accesstoken}`);
+      437 |
+      438 |       expect(deleteRes.statusCode).toBe(204);
+
+      at Object._id (test/todo.test.js:435:46)
+
+  ΓùÅ Todo API Test ΓÇ║ DELETE /api/todos/:id ΓÇ║ should return 401 when access token is missing
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      447 |
+      448 |     test("should return 401 when access token is missing", async () => {
+    > 449 |       const res = await request(app).delete(`/api/todos/${todo.body.todo._id}`);
+          |                                                                          ^
+      450 |
+      451 |       expect(res.statusCode).toBe(401);
+      452 |     });
+
+      at Object._id (test/todo.test.js:449:74)
+
+  ΓùÅ Todo API Test ΓÇ║ DELETE /api/todos/:id ΓÇ║ should return 400 for malformed Mongo ID
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      457 |         .set("Authorization", `Bearer ${accesstoken}`);
+      458 |
+    > 459 |       expect(res.statusCode).toBe(400);
+          |                              ^
+      460 |     });
+      461 |
+      462 |     test("should return 404 for non-existent valid ID", async () => {
+
+      at Object.toBe (test/todo.test.js:459:30)
+
+  ΓùÅ Todo API Test ΓÇ║ DELETE /api/todos/:id ΓÇ║ should return 404 for non-existent valid ID
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 429
+
+      466 |         .set("Authorization", `Bearer ${accesstoken}`);
+      467 |
+    > 468 |       expect(res.statusCode).toBe(404);
+          |                              ^
+      469 |     });
+      470 |   });
+      471 |
+
+      at Object.toBe (test/todo.test.js:468:30)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos/:id ΓÇ║ should successfully get a todo
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      489 |     test("should successfully get a todo", async () => {
+      490 |       const response = await request(app)
+    > 491 |         .get(`/api/todos/${todo.body.todo._id}`)
+          |                                           ^
+      492 |         .set("Authorization", `Bearer ${accesstoken}`);
+      493 |
+      494 |       expect(response.statusCode).toBe(200);
+
+      at Object._id (test/todo.test.js:491:43)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos/:id ΓÇ║ should return 401 when access token is missing
+
+    TypeError: Cannot read properties of undefined (reading '_id')
+
+      498 |
+      499 |     test("should return 401 when access token is missing", async () => {
+    > 500 |       const res = await request(app).get(`/api/todos/${todo.body.todo._id}`);
+          |                                                                       ^
+      501 |
+      502 |       expect(res.statusCode).toBe(401);
+      503 |     });
+
+      at Object._id (test/todo.test.js:500:71)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos/:id ΓÇ║ should return 400 for malformed Mongo ID
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      508 |         .set("Authorization", `Bearer ${accesstoken}`);
+      509 |
+    > 510 |       expect(res.statusCode).toBe(400);
+          |                              ^
+      511 |     });
+      512 |
+      513 |     test("should return 404 for non-existent valid ID", async () => {
+
+      at Object.toBe (test/todo.test.js:510:30)
+
+  ΓùÅ Todo API Test ΓÇ║ GET /api/todos/:id ΓÇ║ should return 404 for non-existent valid ID
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 404
+    Received: 429
+
+      517 |         .set("Authorization", `Bearer ${accesstoken}`);
+      518 |
+    > 519 |       expect(res.statusCode).toBe(404);
+          |                              ^
+      520 |     });
+      521 |   });
+      522 | });
+
+      at Object.toBe (test/todo.test.js:519:30)
+
+FAIL test/user.test.js (5.399 s)
   ΓùÅ User API ΓÇ║ POST /api/users/me/changepassword ΓÇ║ should reject password change with missing fields
 
     expect(received).toBe(expected) // Object.is equality
 
     Expected: 400
-    Received: 404
+    Received: 500
 
       70 |         .set("Authorization", `Bearer ${accesstoken}`);
       71 |
@@ -63,7 +468,7 @@ FAIL test/user.test.js (10.373 s)
     expect(received).toBe(expected) // Object.is equality
 
     Expected: 400
-    Received: 404
+    Received: 500
 
       83 |         .set("Authorization", `Bearer ${accesstoken}`);
       84 |
@@ -80,7 +485,7 @@ FAIL test/user.test.js (10.373 s)
     expect(received).toBe(expected) // Object.is equality
 
     Expected: 401
-    Received: 404
+    Received: 500
 
        96 |         .set("Authorization", `Bearer ${accesstoken}`);
        97 |       console.log(response.body);
@@ -92,10 +497,152 @@ FAIL test/user.test.js (10.373 s)
 
       at Object.toBe (test/user.test.js:98:35)
 
-PASS test/todo.test.js (18.903 s)
-PASS test/auth.test.js
+  ΓùÅ User API ΓÇ║ PUT /api/users/me ΓÇ║ should update name without profile photo
 
-Test Suites: 1 failed, 2 passed, 3 total
-Tests:       5 failed, 46 passed, 51 total
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      115 |         .set("Authorization", `Bearer ${accesstoken}`);
+      116 |
+    > 117 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      118 |
+      119 |       expect(response.body).toHaveProperty("user");
+      120 |     });
+
+      at Object.toBe (test/user.test.js:117:35)
+
+  ΓùÅ User API ΓÇ║ PUT /api/users/me ΓÇ║ should update profile photo without changing name
+
+    read ECONNRESET
+
+  ΓùÅ User API ΓÇ║ PUT /api/users/me ΓÇ║ should update both name and profile photo
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      138 |         .set("Authorization", `Bearer ${accesstoken}`);
+      139 |
+    > 140 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      141 |
+      142 |       expect(response.body).toHaveProperty("user");
+      143 |     });
+
+      at Object.toBe (test/user.test.js:140:35)
+
+  ΓùÅ User API ΓÇ║ PUT /api/users/me ΓÇ║ should reject invalid name
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 500
+
+      157 |         .set("Authorization", `Bearer ${accesstoken}`);
+      158 |
+    > 159 |       expect(response.statusCode).toBe(400);
+          |                                   ^
+      160 |     });
+      161 |
+      162 |     test("should reject invalid profile photo type", async () => {
+
+      at Object.toBe (test/user.test.js:159:35)
+
+  ΓùÅ User API ΓÇ║ PUT /api/users/me ΓÇ║ should reject invalid profile photo type
+
+    read ECONNRESET
+
+  ΓùÅ User API ΓÇ║ GET /api/users/me ΓÇ║ should get user details with valid authentication
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 500
+
+      184 |         .set("Authorization", `Bearer ${accesstoken}`);
+      185 |
+    > 186 |       expect(response.statusCode).toBe(200);
+          |                                   ^
+      187 |
+      188 |       expect(response.body).toHaveProperty("user");
+      189 |     });
+
+      at Object.toBe (test/user.test.js:186:35)
+
+FAIL test/auth.test.js
+  ΓùÅ login or sign in request testing ΓÇ║ login request with complete body
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 429
+
+      72 |       password: "123456789",
+      73 |     });
+    > 74 |     expect(loginResponse.statusCode).toBe(200);
+         |                                      ^
+      75 |     expect(loginResponse.body).toHaveProperty("accesstoken");
+      76 |     expect(loginResponse.body).toHaveProperty("user");
+      77 |   });
+
+      at Object.toBe (test/auth.test.js:74:38)
+
+  ΓùÅ login or sign in request testing ΓÇ║ login request with incorrect credentails
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 401
+    Received: 429
+
+      81 |       password: "1234239430",
+      82 |     });
+    > 83 |     expect(loginResponse.statusCode).toBe(401);
+         |                                      ^
+      84 |   });
+      85 |   test("login request with  missing fields like email or password", async () => {
+      86 |     const loginResponse = await request(app).post("/api/auth/login").send({
+
+      at Object.toBe (test/auth.test.js:83:38)
+
+  ΓùÅ login or sign in request testing ΓÇ║ login request with  missing fields like email or password
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+      87 |       email: "test1@example.com",
+      88 |     });
+    > 89 |     expect(loginResponse.statusCode).toBe(400);
+         |                                      ^
+      90 |     expect(loginResponse.body).toHaveProperty("success", false);
+      91 |   });
+      92 |
+
+      at Object.toBe (test/auth.test.js:89:38)
+
+  ΓùÅ login or sign in request testing ΓÇ║ login request less than 8 char password like zod validation error
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 400
+    Received: 429
+
+       96 |       password: "",
+       97 |     });
+    >  98 |     expect(loginResponse.statusCode).toBe(400);
+          |                                      ^
+       99 |   });
+      100 | });
+      101 |
+
+      at Object.toBe (test/auth.test.js:98:38)
+
+Test Suites: 3 failed, 3 total
+Tests:       41 failed, 10 passed, 51 total
 Snapshots:   0 total
-Time:        34.367 s
+Time:        13.423 s, estimated 22 s

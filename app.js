@@ -28,7 +28,7 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(requestlogger);
-// app.use(generallimiter);
+app.use(generallimiter);
 
 app.use("/api/auth", authRouter);
 app.use("/api/admin", authMiddleware, adminRouter);

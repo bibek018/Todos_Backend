@@ -27,7 +27,7 @@ describe("User API", () => {
 
     test("should change password with valid authentication", async () => {
       const response = await request(app)
-        .post("/api/users/me/changepassword")
+        .put("/api/users/me/changepassword")
         .send({
           currentPassword: "12345678",
           newPassword: "123456789",
@@ -45,7 +45,7 @@ describe("User API", () => {
 
     test("should reject password change without authentication", async () => {
       const response = await request(app)
-        .post("/api/users/me/changepassword")
+        .put("/api/users/me/changepassword")
         .send({
           currentPassword: "12345678",
           newPassword: "123456789",
@@ -62,7 +62,7 @@ describe("User API", () => {
 
     test("should reject password change with missing fields", async () => {
       const response = await request(app)
-        .post("/api/users/me/changepassword")
+        .put("/api/users/me/changepassword")
         .send({
           currentPassword: "12345678",
           newPassword: "123456789",
@@ -74,7 +74,7 @@ describe("User API", () => {
 
     test("should reject when new password and confirmation do not match", async () => {
       const response = await request(app)
-        .post("/api/users/me/changepassword")
+        .put("/api/users/me/changepassword")
         .send({
           currentPassword: "12345678",
           newPassword: "123456789",
@@ -87,7 +87,7 @@ describe("User API", () => {
 
     test("should reject when current password is incorrect", async () => {
       const response = await request(app)
-        .post("/api/users/me/changepassword")
+        .put("/api/users/me/changepassword")
         .send({
           currentPassword: "wrongpassword",
           newPassword: "123456789",
