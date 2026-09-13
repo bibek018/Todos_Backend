@@ -10,7 +10,15 @@ import { User } from "../model/User.js";
 // requests the same way a real browser session would.
 
 beforeAll(async () => {
-  await mongoose.connect(`${process.env.TEST_DB_URI}`);
+  const uri = process.env.TEST_DB_URI;
+
+  if (!uri || !uri.includes("test")) {
+    throw new Error(
+      "Refusing to run tests: TEST_DB_URI is missing or doesn't look like a test database.",
+    );
+  }
+
+  await mongoose.connect(uri); 
 });
 
 afterEach(async () => {
@@ -80,7 +88,6 @@ describe("POST /api/auth/refresh", () => {
     expect(res.statusCode).toBe(401);
   });
   test("should reject a stale refresh token after it has been rotated", async () => {
-
     const { agent, loginRes } = await loginWithAgent();
     //capture the original refresh token
     const originalToken = loginRes.headers["set-cookie"].find((c) =>

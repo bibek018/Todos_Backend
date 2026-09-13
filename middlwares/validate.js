@@ -10,7 +10,6 @@ export const validate = (schema, source = "body") => {
           field: i.path.join("."),
           message: i.message,
         }));
-        console.log(err);
         throw err;
       }
       if (!req.validated) {

@@ -1,10 +1,18 @@
-import request  from "supertest";
+import request from "supertest";
 import app from "../app.js";
 import { authUser } from "./helper/auth.js";
 import { Todo } from "../model/Todo.js";
 import mongoose from "mongoose";
 beforeAll(async () => {
-  await mongoose.connect(`${process.env.TEST_DB_URI}`);
+  const uri = process.env.TEST_DB_URI;
+
+  if (!uri || !uri.includes("test")) {
+    throw new Error(
+      "Refusing to run tests: TEST_DB_URI is missing or doesn't look like a test database.",
+    );
+  }
+
+  await mongoose.connect(uri); 
 });
 afterEach(async () => {
   await Todo.deleteMany({});

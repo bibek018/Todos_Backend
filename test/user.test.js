@@ -8,7 +8,15 @@ describe("User API", () => {
   // CHANGE PASSWORD
 
   beforeAll(async () => {
-    await mongoose.connect(`${process.env.TEST_DB_URI}`);
+    const uri = process.env.TEST_DB_URI;
+
+    if (!uri || !uri.includes("test")) {
+      throw new Error(
+        "Refusing to run tests: TEST_DB_URI is missing or doesn't look like a test database.",
+      );
+    }
+
+    await mongoose.connect(uri);
   });
 
   afterEach(async () => {
