@@ -90,7 +90,7 @@ export const handleRefresh = catchAsync(async (req, res, next) => {
   const newrefreshtoken = await generateRefreshToken(user);
   res.cookie("refreshtoken", newrefreshtoken, {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     secure: process.env.NODE_ENV === "production",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
