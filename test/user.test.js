@@ -102,7 +102,6 @@ describe("User API", () => {
           confirmNewPassword: "123456789",
         })
         .set("Authorization", `Bearer ${accesstoken}`);
-      console.log(response.body);
       expect(response.statusCode).toBe(401);
     });
   });
