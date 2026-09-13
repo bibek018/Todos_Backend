@@ -12,8 +12,6 @@ import { notFound } from "./middlwares/notFound.js";
 import { errorHandler } from "./middlwares/errorHandler.js";
 import cookieParser from "cookie-parser";
 import passport from "./utils/passport.js";
-import "./utils/passport.js";
-import logger from "./utils/logger.js";
 import { generallimiter } from "./utils/ratelimiter.js";
 const app = express();
 
