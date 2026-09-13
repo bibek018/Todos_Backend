@@ -13,8 +13,7 @@ export const githubAuthController = catchAsync(async (req, res, next) => {
     return next(new AppError("User not found", 404));
   }
 
-  const accesstoken = generateAccessToken(user);
-  const refreshtoken = generateRefreshToken(user);
+  const refreshtoken = await generateRefreshToken(user);
 
   res.cookie("refreshtoken", refreshtoken, {
     sameSite: "none",

@@ -1,7 +1,7 @@
 import { User } from "../model/User.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
 import { catchAsync } from "../utils/catchAsync.js";
-import {AppError} from "../utils/AppError.js";
+import { AppError } from "../utils/AppError.js";
 export const googleAuthController = catchAsync(async (req, res, next) => {
   if (!req?.user?.email) {
     return next(new AppError("Google authentication failed", 400));
@@ -11,9 +11,7 @@ export const googleAuthController = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("User not found", 404));
   }
-
-  const accesstoken = generateAccessToken(user);
-  const refreshtoken = generateRefreshToken(user);
+  const refreshtoken = await generateRefreshToken(user);
 
   res.cookie("refreshtoken", refreshtoken, {
     sameSite: "none",
@@ -26,5 +24,4 @@ export const googleAuthController = catchAsync(async (req, res, next) => {
   await user.save();
 
   res.redirect(`${process.env.CLIENT_ORIGIN}/dashboard`);
-}
-);
+});
