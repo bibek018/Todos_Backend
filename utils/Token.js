@@ -16,6 +16,7 @@ export const generateRefreshToken = (user) => {
   const refreshtoken = jwt.sign(
     {
       userId: user._id,
+      jti: crypto.randomUUID(), 
     },
     process.env.REFRESH_SECRET,
     {

@@ -19,7 +19,7 @@ export const createAccount = catchAsync(async (req, res, next) => {
     name,
     email,
     password,
-    role:"user",
+    role: "user",
   });
 
   res.status(201).json({
@@ -78,10 +78,14 @@ export const handleRefresh = catchAsync(async (req, res, next) => {
     return next(
       new AppError("User no longer exists. Please log in again", 401),
     );
-  if (user.refreshtoken !== rtoken)
+  if (String(user.refreshtoken) !== String(rtoken)) {
     return next(
-      new AppError("User no longer exists. Please log in again", 401),
+      new AppError(
+        "Invalid or rotated refresh token. Please log in again.",
+        401,
+      ),
     );
+  }
 
   const newrefreshtoken = await generateRefreshToken(user);
   res.cookie("refreshtoken", newrefreshtoken, {

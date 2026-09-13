@@ -17,7 +17,7 @@ export const errorHandler = (err, req, res, next) => {
       success: false,
     });
   }
-  if (err.name === "JSONWebTokenError") {
+  if (err.name === "JsonWebTokenError") {
     return res.status(401).json({
       status: 401,
       message: "Invalid access token",
