@@ -16,7 +16,7 @@ export const googleAuthController = catchAsync(async (req, res, next) => {
   const refreshtoken = generateRefreshToken(user);
 
   res.cookie("refreshtoken", refreshtoken, {
-    sameSite: "strict",
+    sameSite: "none",
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,

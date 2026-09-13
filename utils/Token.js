@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-export const generateAccessToken = (user) => {
+export const generateAccessToken =async (user) => {
   const accesstoken = jwt.sign(
     {
       userId: user._id,
@@ -13,7 +13,7 @@ export const generateAccessToken = (user) => {
   );
   return accesstoken;
 };
-export const generateRefreshToken = (user) => {
+export const generateRefreshToken = async(user) => {
   const refreshtoken = jwt.sign(
     {
       userId: user._id,
