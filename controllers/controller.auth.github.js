@@ -1,6 +1,6 @@
 import { User } from "../model/User.js";
 import { catchAsync } from "../utils/catchAsync.js";
-import {AppError} from "../utils/AppError.js";
+import { AppError } from "../utils/AppError.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
 
 export const githubAuthController = catchAsync(async (req, res, next) => {
@@ -14,13 +14,15 @@ export const githubAuthController = catchAsync(async (req, res, next) => {
   }
 
   const refreshtoken = await generateRefreshToken(user);
-
+  const isProduction = process.env.NODE_ENV === "production";
   res.cookie("refreshtoken", refreshtoken, {
-    sameSite: "none",
-    secure: true,
     httpOnly: true,
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
+  console.log("NODE_ENV:", process.env.NODE_ENV);
+  console.log("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
 
   user.refreshtoken = refreshtoken;
   await user.save();

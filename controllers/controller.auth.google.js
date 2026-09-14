@@ -12,11 +12,11 @@ export const googleAuthController = catchAsync(async (req, res, next) => {
     return next(new AppError("User not found", 404));
   }
   const refreshtoken = await generateRefreshToken(user);
-
+  const isProduction = process.env.NODE_ENV === "production";
   res.cookie("refreshtoken", refreshtoken, {
-    sameSite: "none",
-    secure:true,
     httpOnly: true,
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 

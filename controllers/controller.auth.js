@@ -88,10 +88,11 @@ export const handleRefresh = catchAsync(async (req, res, next) => {
   }
 
   const newrefreshtoken = await generateRefreshToken(user);
+  const isProduction = process.env.NODE_ENV === "production";
   res.cookie("refreshtoken", newrefreshtoken, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   user.refreshtoken = newrefreshtoken;
@@ -126,7 +127,7 @@ export const handleLogout = catchAsync(async (req, res, next) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    path: '/',
+    path: "/",
   });
   await user.save();
   res.status(200).json({
