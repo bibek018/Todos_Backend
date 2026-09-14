@@ -94,6 +94,7 @@ export const handleRefresh = catchAsync(async (req, res, next) => {
     sameSite: isProduction ? "none" : "lax",
     secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    path:"/"
   });
   user.refreshtoken = newrefreshtoken;
   await user.save();

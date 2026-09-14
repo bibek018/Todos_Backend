@@ -1,7 +1,6 @@
 import { User } from "../model/User.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
-import logger from "../utils/logger.js";
 import {  generateRefreshToken } from "../utils/Token.js";
 
 export const githubAuthController = catchAsync(async (req, res, next) => {
@@ -14,17 +13,16 @@ export const githubAuthController = catchAsync(async (req, res, next) => {
     return next(new AppError("User not found", 404));
   }
 
-  const refreshtoken = await generateRefreshToken(user);
   const isProduction = process.env.NODE_ENV === "production";
+  const refreshtoken = await generateRefreshToken(user);
   res.cookie("refreshtoken", refreshtoken, {
     httpOnly: true,
     sameSite: isProduction ? "none" : "lax",
     secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    path:"/"
   });
-  logger.info("NODE_ENV:", process.env.NODE_ENV);
-  logger.info("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
-
+  
   user.refreshtoken = refreshtoken;
   await user.save();
 
