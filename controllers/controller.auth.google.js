@@ -20,6 +20,8 @@ export const googleAuthController = catchAsync(async (req, res, next) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
+  logger.info("NODE_ENV:", process.env.NODE_ENV);
+  logger.info("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
   user.refreshtoken = refreshtoken;
   await user.save();
 

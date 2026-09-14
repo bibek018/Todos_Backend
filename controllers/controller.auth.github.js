@@ -22,8 +22,8 @@ export const githubAuthController = catchAsync(async (req, res, next) => {
     secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-  logger("NODE_ENV:", process.env.NODE_ENV);
-  logger("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
+  logger.info("NODE_ENV:", process.env.NODE_ENV);
+  logger.info("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
 
   user.refreshtoken = refreshtoken;
   await user.save();
