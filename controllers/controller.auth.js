@@ -126,6 +126,7 @@ export const handleLogout = catchAsync(async (req, res, next) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
+    path: '/',
   });
   await user.save();
   res.status(200).json({
