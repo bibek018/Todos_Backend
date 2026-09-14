@@ -22,7 +22,7 @@ app.use(
     credentials: true,
   }),
 );
-// app.use(helmet());
+app.use(helmet());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(requestlogger);
