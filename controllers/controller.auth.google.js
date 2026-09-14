@@ -50,6 +50,7 @@ export const googleAuthController = catchAsync(async (req, res, next) => {
   logger.info(`NODE_ENV: ${JSON.stringify(process.env.NODE_ENV)}`);
   logger.info(`REFRESH_SECRET: ${JSON.stringify(process.env.REFRESH_SECRET)}`);
   logger.info(`SERVER_URL: ${JSON.stringify(process.env.SERVER_URL)}`);
+  logger.info(`Refresh Token ${refreshtoken}`)
   logger.info("========== ENV CHECK ENDS ==========");
   user.refreshtoken = refreshtoken;
   await user.save();
