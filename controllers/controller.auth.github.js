@@ -1,7 +1,8 @@
 import { User } from "../model/User.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
-import { generateAccessToken, generateRefreshToken } from "../utils/Token.js";
+import logger from "../utils/logger.js";
+import {  generateRefreshToken } from "../utils/Token.js";
 
 export const githubAuthController = catchAsync(async (req, res, next) => {
   if (!req?.user?.email) {
@@ -21,8 +22,8 @@ export const githubAuthController = catchAsync(async (req, res, next) => {
     secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-  console.log("NODE_ENV:", process.env.NODE_ENV);
-  console.log("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
+  logger("NODE_ENV:", process.env.NODE_ENV);
+  logger("CLIENT_ORIGIN:", process.env.CLIENT_ORIGIN);
 
   user.refreshtoken = refreshtoken;
   await user.save();
