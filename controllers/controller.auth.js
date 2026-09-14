@@ -55,7 +55,7 @@ export const loginAccount = catchAsync(async (req, res, next) => {
   res.cookie("refreshtoken", refreshtoken, {
     httpOnly: true,
     sameSite: "none",
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   user.refreshtoken = refreshtoken;
@@ -124,7 +124,7 @@ export const handleLogout = catchAsync(async (req, res, next) => {
   user.refreshtoken = null;
   res.clearCookie("refreshtoken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "strict",
   });
   await user.save();
