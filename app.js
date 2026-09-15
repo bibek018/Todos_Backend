@@ -26,8 +26,13 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(requestlogger);
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "Server is healthy",
+  });
+});
 app.use(generallimiter);
-
 app.use("/api/auth", authRouter);
 app.use("/api/admin", authMiddleware, adminRouter);
 app.use("/api/users", authMiddleware, userRouter);
