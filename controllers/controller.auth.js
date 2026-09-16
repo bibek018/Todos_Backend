@@ -52,11 +52,15 @@ export const loginAccount = catchAsync(async (req, res, next) => {
 
   const accesstoken = await generateAccessToken(user);
   const refreshtoken = await generateRefreshToken(user);
+  const isProduction = process.env.NODE_ENV === "production";
+
   res.cookie("refreshtoken", refreshtoken, {
     httpOnly: true,
-    sameSite: "none",
-    secure: true,
+    sameSite: isProduction?"none":"lax",
+    secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: "/",
+
   });
   user.refreshtoken = refreshtoken;
   await user.save();
@@ -94,7 +98,7 @@ export const handleRefresh = catchAsync(async (req, res, next) => {
     sameSite: isProduction ? "none" : "lax",
     secure: isProduction,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    path:"/"
+    path: "/",
   });
   user.refreshtoken = newrefreshtoken;
   await user.save();

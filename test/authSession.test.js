@@ -18,7 +18,7 @@ beforeAll(async () => {
     );
   }
 
-  await mongoose.connect(uri); 
+  await mongoose.connect(uri);
 });
 
 afterEach(async () => {
@@ -44,15 +44,16 @@ const loginWithAgent = async () => {
     email: testUser.email,
     password: testUser.password,
   });
+  console.log("LOGIN SET-COOKIE:", loginRes.headers["set-cookie"]);
   return { agent, loginRes };
-};
+};  
 
 describe("POST /api/auth/refresh", () => {
   test("should issue a new access token with a valid refresh cookie", async () => {
     const { agent } = await loginWithAgent();
-
     const refreshRes = await agent.post("/api/auth/refresh");
-
+    console.log("STATUS:", refreshRes.statusCode);
+    console.log("BODY:", refreshRes.body);
     expect(refreshRes.statusCode).toBe(200);
     expect(refreshRes.body).toHaveProperty("accessToken");
     expect(refreshRes.body).toHaveProperty("user");
