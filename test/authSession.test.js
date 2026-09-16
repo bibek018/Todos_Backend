@@ -40,6 +40,7 @@ const testUser = {
 const loginWithAgent = async () => {
   const agent = request.agent(app);
   await agent.post("/api/auth/register").send(testUser);
+  
   const loginRes = await agent.post("/api/auth/login").send({
     email: testUser.email,
     password: testUser.password,
