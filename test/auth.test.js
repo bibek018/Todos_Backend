@@ -70,7 +70,7 @@ describe("login or sign in request testing", () => {
     await request(app).post("/api/auth/register").send({
       name: "Test User",
       email: "test1@gmail.com",
-      
+      password: "123456789",
     });
   });
   test("login request with complete body", async () => {
