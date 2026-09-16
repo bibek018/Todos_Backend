@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SERVER_URL: http://localhost:5001
+      CLIENT_ORIGIN: http://localhost:3000
+      PORT: 5001
+      MONGO_URI: unused_in_ci
+      TEST_DB_URI: mongodb://localhost:27017/test_db
+      ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
+      REFRESH_SECRET: ${{ secrets.REFRESH_SECRET }}
+      GOOGLE_CLIENT_ID: dummy_google_client_id
+      GOOGLE_CLIENT_SECRET: dummy_google_client_secret
+      GITHUB_CLIENT_ID: dummy_github_client_id
+      GITHUB_CLIENT_SECRET: dummy_github_client_secret
+      CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: npm test
